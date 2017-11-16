@@ -85,8 +85,8 @@ public class PhotoZoomView extends ImageView implements OnGlobalLayoutListener,
 				return;
 
 			}
-			int dw = d.getIntrinsicWidth();
-			int dh = d.getIntrinsicHeight();
+			float dw = d.getIntrinsicWidth();
+			float dh = d.getIntrinsicHeight();
 
 			float scale = 1.0f;
 
@@ -102,8 +102,8 @@ public class PhotoZoomView extends ImageView implements OnGlobalLayoutListener,
 			mMidScale = scale * 2;
 			mMaxScale = scale * 4;
 
-			int dx = getWidth() / 2 - dw / 2;
-			int dy = getHeight() / 2 - dh / 2;
+			float dx = getWidth() / 2 - dw / 2;
+			float dy = getHeight() / 2 - dh / 2;
 
 			matrix.postTranslate(dx, dy);
 			matrix.postScale(mInitScale, mInitScale, width / 2, height / 2);
