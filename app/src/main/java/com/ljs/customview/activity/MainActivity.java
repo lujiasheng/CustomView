@@ -21,7 +21,9 @@ public class MainActivity extends Activity implements OnClickListener{
 		Button button1 = (Button) findViewById(R.id.button1);
 		button1.setOnClickListener(this);
 		Button button2 = (Button) findViewById(R.id.button2);
-		button2.setOnClickListener(this);
+		button2.setOnClickListener(this);Button button3 = (Button) findViewById(R.id.button3);
+		button3.setOnClickListener(this);Button button4 = (Button) findViewById(R.id.button4);
+		button4.setOnClickListener(this);
 		
 	}
 
@@ -34,7 +36,12 @@ public class MainActivity extends Activity implements OnClickListener{
 		case R.id.button2:
 			startActivity(new Intent(this,PhotoZoomActivity.class));
 			break;
-
+			case R.id.button3:
+				startActivity(new Intent(this,SlideScaleActivity.class));
+				break;
+			case R.id.button4:
+				startActivity(new Intent(this,DragCardActivity.class));
+				break;
 		default:
 			break;
 		}

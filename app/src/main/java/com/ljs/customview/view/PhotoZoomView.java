@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.view.View.OnTouchListener;
 
 /**
- * 自由缩放移动图片控件
+ *
  * 
  * @author ljs
  * 
@@ -70,7 +70,7 @@ public class PhotoZoomView extends ImageView implements OnGlobalLayoutListener,
 	}
 
 	/**
-	 * 获取Imageview图片的大小
+	 * 锟斤拷取Imageview图片锟侥达拷小
 	 */
 	@Override
 	public void onGlobalLayout() {
