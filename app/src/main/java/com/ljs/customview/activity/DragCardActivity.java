@@ -1,10 +1,15 @@
 package com.ljs.customview.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 import com.ljs.customview.R;
@@ -29,7 +34,9 @@ public class DragCardActivity extends AppCompatActivity {
     public static int getScreenHeightPixels(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }
+
     Animation animation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +51,33 @@ public class DragCardActivity extends AppCompatActivity {
                 switch (integer) {
                     case MotionEvent.ACTION_DOWN:
 
+
                         break;
                     case MotionEvent.ACTION_MOVE:
 
                         break;
                     case MotionEvent.ACTION_UP:
+                        final AnimatorSet animatorSet = new AnimatorSet();
+                        animatorSet.playTogether(
+                                ObjectAnimator.ofFloat(cardView, "scaleX", 1f, 1.3f),
+                                ObjectAnimator.ofFloat(cardView, "scaleY", 1f, 1.3f)
+                        );
+                        animatorSet.setDuration(2000);
+                        animatorSet.setupStartValues();
+                        animatorSet.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                cardView.setScaleX(1f);
+                                cardView.setScaleY(1f);
+                            }
+                        });
+                        animatorSet.start();
+
                         cardView.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                             }
                         }, 3000);
-
 
 
 //                       Intent intent= new Intent(DragCardActivity.this, SecondActivity.class);

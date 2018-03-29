@@ -1,50 +1,46 @@
 package com.ljs.customview.view;
 
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Scroller;
 
 /**
  * 作者：Administrator create on 2018/3/28
- * <p/>
+ * <p>
  * 内容：
  */
-public class BorderScaleImageView extends ImageView {
+public class BorderScaleImageView extends ImageView implements Animator.AnimatorListener {
 
     private float defalutScale = 1f;
     private int mParentWidth;
     //记录父布局的左右距离
     private int mLeft, mRight;
 
-    private static final int SLIDE_LEFT = 0;
-    private static final int SLIDE_RIGTH = 1;
-    //滑动方向
-    private int slideState = 0;
 
     //手指最后的横向和纵向坐标
     private int lastX;
     private int mWidth;
 
     //放大倍数
-    private float scale = 1.3f;
+    private float scale = 1.1f;
 
     //滑动时间等份
     private int seconds = 3;
 
     private boolean isFirst = true;
     //缩放的时间
-    private int scaleTime;
-    private ValueAnimator valueAnimator;
-    private int mHeight;
-    private int mTop;
+    private int scaleTime = 500;
+    private Scroller mScroller;
+    private int screenWidth = 1080;
 
     public BorderScaleImageView(Context context) {
         this(context, null);
@@ -56,12 +52,7 @@ public class BorderScaleImageView extends ImageView {
 
     public BorderScaleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        valueAnimator = ObjectAnimator.ofFloat(defalutScale, 1.3f);
-        valueAnimator.setDuration(scaleTime);
-        valueAnimator.setRepeatCount(1);
-        valueAnimator.setRepeatMode(ValueAnimator.INFINITE);
-        valueAnimator.addUpdateListener(scaleListener);
-
+        mScroller = new Scroller(context);
     }
 
 
@@ -70,10 +61,7 @@ public class BorderScaleImageView extends ImageView {
         super.onDraw(canvas);
         if (isFirst) {
             mWidth = getWidth();
-            mHeight = getHeight();
             mLeft = getLeft();
-            mTop = getTop();
-            mRight = mParentWidth - mLeft;
             isFirst = false;
         }
     }
@@ -89,15 +77,6 @@ public class BorderScaleImageView extends ImageView {
         }
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (getLeft() < mParentWidth / 2) {
-            slideState = SLIDE_RIGTH;
-        } else if (getRight() > mParentWidth / 2) {
-            slideState = SLIDE_LEFT;
-        }
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -106,69 +85,102 @@ public class BorderScaleImageView extends ImageView {
             case MotionEvent.ACTION_DOWN:
                 lastX = x;
                 break;
-            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_MOVE: {
                 int offsetX = x - lastX;
-//                Log.d("BorderScaleImageView", "getLeft():" + getLeft());
-//                Log.d("BorderScaleImageView", "getRight():" + getRight());
-//                Log.d("BorderScaleImageView", "mParentWidth:" + mParentWidth);
-//                Log.d("BorderScaleImageView", "mLeft:" + mLeft);
-//                Log.d("BorderScaleImageView", "mRight:" + mRight);
-                if (getRight() + offsetX <= (mParentWidth - mLeft) && getLeft() + offsetX >= mLeft && (getLeft() >= mLeft && getRight() <= mRight)) {
-                    offsetLeftAndRight(offsetX);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-
-                if (getLeft() <= (mParentWidth - mWidth) / 2) {
-                    ObjectAnimator translationX = ObjectAnimator.ofFloat(this, "translationX", mLeft - getLeft());
-                    translationX.addListener(TranslationListener);
-                    translationX.setDuration(Math.abs(getLeft() - mLeft) * seconds).start();
+                if (offsetX > 0 && event.getRawX() - event.getX() + mWidth + Math.abs(offsetX) <= screenWidth - mLeft)
+                    ((View) getParent()).scrollBy(-offsetX, 0);
+            }
+            break;
+            case MotionEvent.ACTION_UP: {
+                if (event.getRawX() - event.getX() + mWidth >= screenWidth - 2 * mLeft) {
+                    AnimatorSet set = new AnimatorSet();
+                    set.playTogether(
+                            ObjectAnimator.ofFloat(this, "scaleX", 1f, scale),
+                            ObjectAnimator.ofFloat(this, "scaleY", 1f, scale)
+                    );
+                    set.setDuration(scaleTime);
+                    set.setTarget(this);
+                    set.addListener(this);
+                    set.start();
 
                 } else {
-                    ObjectAnimator translationX = ObjectAnimator.ofFloat(this, "translationX", mRight - getRight());
-                    translationX.addListener(TranslationListener);
-                    translationX.setDuration(Math.abs(mRight - getRight()) * seconds).start();
+                    View viewGroup = (View) getParent();
+                    mScroller.startScroll(viewGroup.getScrollX(), viewGroup.getScrollY(),
+                            -viewGroup.getScrollX(), -viewGroup.getScrollY(), viewGroup.getScrollX() * seconds);
+                    invalidate();
                 }
-//
-                break;
+            }
+            break;
         }
 
 
         return true;
     }
 
-    private AnimatorListener TranslationListener = new AnimatorListener() {
-        @Override
-        public void onAnimationStart(Animator animation) {
-
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()) {
+            ((View) getParent()).scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+            invalidate();
         }
+    }
 
-        @Override
-        public void onAnimationEnd(Animator animation) {
-//            if (getLeft() <= (mParentWidth - mWidth) / 2) {
-//                setLeft(mLeft);
-//            } else {
-//                setLeft(mParentWidth - mWidth - mLeft);
-//            }
-            valueAnimator.start();
-            Log.d("BorderScaleImageView", "getLeft():" + getLeft());
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
-    };
     private ValueAnimator.AnimatorUpdateListener scaleListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            defalutScale = (Float) animation.getAnimatedValue();
-            postInvalidate();
+
         }
     };
+
+
+    @Override
+    public void onAnimationStart(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        if (listener != null) {
+            listener.scaleComplete();
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.width = screenWidth;
+            layoutParams.height = 1920;
+
+            requestLayout();
+        }
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                setScaleX(defalutScale);
+                setScaleY(defalutScale);
+                View viewGroup = (View) getParent();
+                mScroller.startScroll(viewGroup.getScrollX(), viewGroup.getScrollY(),
+                        -viewGroup.getScrollX(), -viewGroup.getScrollY(), viewGroup.getScrollX() * seconds);
+                invalidate();
+            }
+        }, 1000);
+
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
+    }
+
+    public interface ScaleCompleteListener {
+        void scaleComplete();
+    }
+
+    private ScaleCompleteListener listener;
+
+    public void setScaleCompleteListener(ScaleCompleteListener listener) {
+        this.listener = listener;
+    }
 }
