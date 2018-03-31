@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="SearchView">
         <attr name="search_color" format="color"/>
-
+        <attr name="circle_radius" format="dimension"/>
+        <attr name="magnifier_width" format="dimension"/>
     </declare-styleable>
 </resources>

@@ -9,11 +9,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 import com.ljs.customview.R;
-import com.ljs.customview.imp.Listener;
+import com.ljs.customview.listener.Listener;
 import com.ljs.customview.view.DragCardView;
 
 public class DragCardActivity extends AppCompatActivity {

@@ -30,9 +30,10 @@
         </activity>
         <activity android:name=".activity.RouteActivity" />
         <activity android:name=".activity.PhotoZoomActivity" />
-        <activity android:name=".activity.SlideScaleActivity"/>
-        <activity android:name=".activity.DragCardActivity"/>
-        <activity android:name=".activity.FullImageActivity"/>
+        <activity android:name=".activity.SlideScaleActivity" />
+        <activity android:name=".activity.DragCardActivity" />
+        <activity android:name=".activity.FullImageActivity" />
+        <activity android:name=".activity.SearchActivity"></activity>
     </application>
 
 </manifest>

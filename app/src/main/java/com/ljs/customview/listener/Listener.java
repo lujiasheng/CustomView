@@ -1,4 +1,4 @@
-package com.ljs.customview.imp;
+package com.ljs.customview.listener;
 
 public abstract class Listener<Status, Result> {
 	private String tag = "";

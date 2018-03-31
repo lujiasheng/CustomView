@@ -9,7 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.ljs.customview.R;
-import com.ljs.customview.imp.Listener;
+import com.ljs.customview.listener.Listener;
 
 
 /**
