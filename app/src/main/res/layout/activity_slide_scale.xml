@@ -4,11 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ljs.customview.activity.SlideScaleActivity">
-    <ImageView
-        android:id="@+id/full_view"
-        android:layout_width="match_parent"
-        android:scaleType="fitXY"
-        android:layout_height="match_parent" />
+
 
     <com.ljs.customview.view.BorderScaleImageView
         android:id="@+id/scale_view"

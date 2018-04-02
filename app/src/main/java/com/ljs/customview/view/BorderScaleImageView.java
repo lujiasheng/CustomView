@@ -38,7 +38,7 @@ public class BorderScaleImageView extends ImageView implements Animator.Animator
 
     private boolean isFirst = true;
     //缩放的时间
-    private int scaleTime = 500;
+    private int scaleTime = 1000;
     private Scroller mScroller;
     private int screenWidth = 1080;
 
@@ -92,7 +92,7 @@ public class BorderScaleImageView extends ImageView implements Animator.Animator
             }
             break;
             case MotionEvent.ACTION_UP: {
-                if (event.getRawX() - event.getX() + mWidth >= screenWidth - 2 * mLeft) {
+                if (event.getRawX() - event.getX() + mWidth/2 >= screenWidth /2) {
                     AnimatorSet set = new AnimatorSet();
                     set.playTogether(
                             ObjectAnimator.ofFloat(this, "scaleX", 1f, scale),
@@ -143,11 +143,11 @@ public class BorderScaleImageView extends ImageView implements Animator.Animator
     public void onAnimationEnd(Animator animation) {
         if (listener != null) {
             listener.scaleComplete();
-            ViewGroup.LayoutParams layoutParams = getLayoutParams();
-            layoutParams.width = screenWidth;
-            layoutParams.height = 1920;
-
-            requestLayout();
+//            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+//            layoutParams.width = screenWidth;
+//            layoutParams.height = 1920;
+//
+//            requestLayout();
         }
         postDelayed(new Runnable() {
             @Override

@@ -31,8 +31,6 @@ public class SearchView extends View {
     private static final int END = 3;
     //画笔
     private Paint mPaint;
-    //宽
-    private int mWidth;
     private PathMeasure mPathMeasure;
     private Path circle_path;
     private Path search_path;
@@ -46,8 +44,6 @@ public class SearchView extends View {
     private ValueAnimator startAnimator;
     private ValueAnimator searchAnimator;
     private ValueAnimator endAnimator;
-    private int mViewWitdh;
-    private int mViewHeight;
     private Handler handler;
     private float circle_radius;
     private float magnifier_width;
@@ -181,8 +177,6 @@ public class SearchView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mViewWitdh = w;
-        mViewHeight = h;
     }
 
     @Override
