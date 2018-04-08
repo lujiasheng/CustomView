@@ -29,6 +29,9 @@ public class MainActivity extends Activity implements OnClickListener {
         Button button5 = (Button) findViewById(R.id.button5);
         button5.setOnClickListener(this);
 
+        Button button6 = (Button) findViewById(R.id.button6);
+        button6.setOnClickListener(this);
+
     }
 
     @Override
@@ -48,6 +51,10 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
             case R.id.button5:
                 startActivity(new Intent(this, SearchActivity.class));
+                break;
+
+            case R.id.button6:
+                startActivity(new Intent(this, CurveActivity.class));
                 break;
             default:
                 break;

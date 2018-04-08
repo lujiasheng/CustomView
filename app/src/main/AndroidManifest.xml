@@ -33,7 +33,8 @@
         <activity android:name=".activity.SlideScaleActivity" />
         <activity android:name=".activity.DragCardActivity" />
         <activity android:name=".activity.FullImageActivity" />
-        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.CurveActivity"></activity>
     </application>
 
 </manifest>

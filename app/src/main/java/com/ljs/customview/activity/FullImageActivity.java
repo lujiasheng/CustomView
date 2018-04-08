@@ -67,7 +67,7 @@ public class FullImageActivity extends AppCompatActivity {
         fullImage.setTranslationX(mLeft);
         fullImage.setTranslationY(mTop);
         fullImage.animate().scaleX(1).scaleY(1).translationX(0).translationY(0).
-                setDuration(1000).setInterpolator(new DecelerateInterpolator()).start();
+                setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
         ObjectAnimator objectAnimator = ObjectAnimator.ofInt(mBackground, "alpha", 0, 255);
         objectAnimator.setInterpolator(new DecelerateInterpolator());
         objectAnimator.setDuration(500);
