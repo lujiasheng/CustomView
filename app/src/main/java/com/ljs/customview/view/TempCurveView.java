@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -73,6 +74,22 @@ public class TempCurveView extends View {
     //数据
     private List<Float> dataX;
     private List<Float> dataY;
+    /**
+     * 即将要穿越的点集合
+     */
+    private List<PointF> mPoints = new ArrayList<>();
+    /**
+     * 中点集合
+     */
+    private List<PointF> mMidPoints = new ArrayList<>();
+    /**
+     * 中点的中点集合
+     */
+    private List<PointF> mMidMidPoints = new ArrayList<>();
+    /**
+     * 移动后的点集合(控制点)
+     */
+    private List<PointF> mControlPoints = new ArrayList<>();
 
     public TempCurveView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -112,17 +129,23 @@ public class TempCurveView extends View {
         dataX.add(9f);
         dataX.add(12f);
         dataX.add(15f);
+        dataX.add(16f);
+        dataX.add(17f);
         dataX.add(18f);
         dataX.add(21f);
+        dataX.add(22f);
         dataX.add(24f);
 
         dataY.add(5f);
         dataY.add(37f);
         dataY.add(13f);
+        dataY.add(31f);
         dataY.add(15f);
         dataY.add(32f);
         dataY.add(27f);
+        dataY.add(13f);
         dataY.add(34f);
+        dataY.add(21f);
         dataY.add(4f);
         dataY.add(14f);
 
@@ -175,7 +198,8 @@ public class TempCurveView extends View {
             }
         });
 
-        final ValueAnimator dataStart = ObjectAnimator.ofInt(0, textY.size());
+        final ValueAnimator dataStart = ObjectAnimator.ofInt(0, textX.size() - 1);
+        dataStart.setDuration(SECONDS );
         dataStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -201,17 +225,22 @@ public class TempCurveView extends View {
         coorStart.setDuration(SECONDS).start();
         XpointStart.setDuration(SECONDS).start();
         YpointStart.setDuration(SECONDS).start();
-
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mWidth = w;
+        mHeight = h;
+        coorWidth = mWidth - 3 * margin;
+        coorHeight = mHeight - 3 * margin;
+        initPoints();
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mWidth = getWidth();
-        mHeight = getHeight();
-        coorWidth = mWidth - 3 * margin;
-        coorHeight = mHeight - 3 * margin;
+
         canvas.drawColor(Color.parseColor(canvasColor));
         canvas.translate(margin, mHeight - margin);
         canvas.scale(1, -1);
@@ -227,7 +256,7 @@ public class TempCurveView extends View {
      * @param canvas
      */
     private void drawCoor(Canvas canvas) {
-
+        coorPath.reset();
         coorPath.moveTo(0, 0);
         coorPath.lineTo(coorValue * (mWidth - 2 * margin), 0);
         coorPath.moveTo(0, 0);
@@ -242,6 +271,7 @@ public class TempCurveView extends View {
      * @param canvas
      */
     private void drawPoints(Canvas canvas) {
+        pointPath.reset();
         if (textX != null && textY != null) {
             float gridHor = (coorWidth) / textX.size();
             float gridVer = (coorHeight) / textY.size();
@@ -277,28 +307,71 @@ public class TempCurveView extends View {
         }
     }
 
-    private void drawCurve(Canvas canvas) {
-        if (dataX != null && dataY != null) {
-            for (int i = 1; i <= dataIndex; i++) {
-                curvePath.moveTo(dataX.get(i - 1) / textX.get(textX.size() - 1) * coorWidth,
-                        dataY.get(i - 1) / textY.get(textY.size() - 1) * coorHeight);
-                if (i%2==0) {
-                    curvePath.quadTo(dataX.get(i) / textX.get(textX.size() - 1) * coorWidth,
-                            dataY.get(i - 1) / textY.get(textY.size() - 1) * coorHeight,
-                            dataX.get(i) / textX.get(textX.size() - 1) * coorWidth,
-                            dataY.get(i) / textY.get(textY.size() - 1) * coorHeight
-                    );
-                }else {
-                    curvePath.quadTo(dataX.get(i-1) / textX.get(textX.size() - 1) * coorWidth,
-                            dataY.get(i) / textY.get(textY.size() - 1) * coorHeight,
-                            dataX.get(i) / textX.get(textX.size() - 1) * coorWidth,
-                            dataY.get(i) / textY.get(textY.size() - 1) * coorHeight
-                    );
-                }
-            }
-            canvas.drawPath(curvePath, linePaint);
+
+    private void initPoints() {
+        //初始化连接点
+        for (int i = 0; i < dataX.size(); i++) {
+            PointF point = new PointF(dataX.get(i) / textX.get(textX.size() - 1) * coorWidth,
+                    dataY.get(i) / textY.get(textY.size() - 1) * coorHeight);
+            mPoints.add(point);
         }
+        //初始化中点
+        for (int i = 0; i < mPoints.size(); i++) {
+            if (i == mPoints.size() - 1) {
+                continue;
+            } else {
+                PointF pointF = new PointF((mPoints.get(i).x + mPoints.get(i + 1).x) / 2, (mPoints.get(i).y + mPoints.get(i + 1).y) / 2);
+                mMidPoints.add(pointF);
+            }
+        }
+        //初始化中点的中点
+        for (int i = 0; i < mMidPoints.size(); i++) {
+
+            if (i == mMidPoints.size() - 1) {
+                continue;
+            } else {
+                PointF pointF = new PointF((mMidPoints.get(i).x + mMidPoints.get(i + 1).x) / 2, (mMidPoints.get(i).y + mMidPoints.get(i + 1).y) / 2);
+                mMidMidPoints.add(pointF);
+            }
+        }
+        //初始化控制点
+        for (int i = 0; i < mPoints.size(); i++) {
+            if (i == 0 || i == mPoints.size() - 1) {
+                continue;
+            } else {
+                PointF before = new PointF();
+                PointF after = new PointF();
+                before.x = mPoints.get(i).x - mMidMidPoints.get(i - 1).x + mMidPoints.get(i - 1).x;
+                before.y = mPoints.get(i).y - mMidMidPoints.get(i - 1).y + mMidPoints.get(i - 1).y;
+                after.x = mPoints.get(i).x - mMidMidPoints.get(i - 1).x + mMidPoints.get(i).x;
+                after.y = mPoints.get(i).y - mMidMidPoints.get(i - 1).y + mMidPoints.get(i).y;
+                mControlPoints.add(before);
+                mControlPoints.add(after);
+            }
+        }
+
     }
+
+    private void drawCurve(Canvas canvas) {
+        curvePath.reset();
+        for (int i = 0; i < dataIndex; i++) {
+            if (i == 0) {
+                curvePath.moveTo(mPoints.get(i).x, mPoints.get(i).y);
+                curvePath.quadTo(mControlPoints.get(i).x, mControlPoints.get(i).y,
+                        mPoints.get(i + 1).x, mPoints.get(i + 1).y);
+            } else if (i < mPoints.size() - 2) {
+                curvePath.cubicTo(mControlPoints.get(2 * i - 1).x, mControlPoints.get(2 * i - 1).y,
+                        mControlPoints.get(2 * i).x, mControlPoints.get(2 * i).y,
+                        mPoints.get(i + 1).x, mPoints.get(i + 1).y);
+            } else if (i == mPoints.size() - 2) {
+                curvePath.moveTo(mPoints.get(i).x, mPoints.get(i).y);
+                curvePath.quadTo(mControlPoints.get(mControlPoints.size() - 1).x, mControlPoints.get(mControlPoints.size() - 1).y,
+                        mPoints.get(i + 1).x, mPoints.get(i + 1).y);
+            }
+        }
+        canvas.drawPath(curvePath, linePaint);
+    }
+
 
     public void setShowCoor(boolean showCoor) {
         this.showCoor = showCoor;
