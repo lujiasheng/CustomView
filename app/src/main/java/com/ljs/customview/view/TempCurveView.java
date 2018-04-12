@@ -9,9 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.ljs.customview.utils.ActivityUtils;
@@ -26,6 +28,13 @@ import java.util.List;
  */
 public class TempCurveView extends View {
 
+    private ValueAnimator coorStart;
+    private ValueAnimator xpointStart;
+    private ValueAnimator ypointStart;
+    private ValueAnimator dataStart;
+    private Paint curvePaint;
+    private PathMeasure mPathMeasure;
+
     public TempCurveView(Context context) {
         this(context, null);
     }
@@ -37,7 +46,7 @@ public class TempCurveView extends View {
     //坐标宽高
     private float coorWidth;
     private float coorHeight;
-    private int dataIndex;
+    private float curveValue;
 
     private static final int SECONDS = 2000;
     //画布颜色
@@ -63,7 +72,8 @@ public class TempCurveView extends View {
     //外边距
     private float margin = 15;
 
-    private Path coorPath;
+    private Path XcoorPath;
+    private Path YcoorPath;
     private Path pointPath;
     private Path curvePath;
 
@@ -96,59 +106,6 @@ public class TempCurveView extends View {
         textSize = ActivityUtils.dip2px(textSize, context);
         margin = ActivityUtils.dip2px(margin, context);
         pointHeight = ActivityUtils.dip2px(pointHeight, context);
-
-        textX = new ArrayList<>();
-        textY = new ArrayList<>();
-        dataX = new ArrayList<>();
-        dataY = new ArrayList<>();
-
-        textX.add(2);
-        textX.add(4);
-        textX.add(6);
-        textX.add(8);
-        textX.add(10);
-        textX.add(12);
-        textX.add(14);
-        textX.add(16);
-        textX.add(18);
-        textX.add(20);
-        textX.add(22);
-        textX.add(24);
-        textY.add(5);
-        textY.add(10);
-        textY.add(15);
-        textY.add(20);
-        textY.add(25);
-        textY.add(30);
-        textY.add(35);
-        textY.add(40);
-
-        dataX.add(0f);
-        dataX.add(3f);
-        dataX.add(6f);
-        dataX.add(9f);
-        dataX.add(12f);
-        dataX.add(15f);
-        dataX.add(16f);
-        dataX.add(17f);
-        dataX.add(18f);
-        dataX.add(21f);
-        dataX.add(22f);
-        dataX.add(24f);
-
-        dataY.add(5f);
-        dataY.add(37f);
-        dataY.add(13f);
-        dataY.add(31f);
-        dataY.add(15f);
-        dataY.add(32f);
-        dataY.add(27f);
-        dataY.add(13f);
-        dataY.add(34f);
-        dataY.add(21f);
-        dataY.add(4f);
-        dataY.add(14f);
-
         initPaint();
         initPath();
         initListener();
@@ -168,47 +125,25 @@ public class TempCurveView extends View {
         linePaint.setStrokeWidth(1);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setColor(Color.parseColor(color));
+
+        curvePaint = new Paint(linePaint);
+        curvePaint.setStrokeWidth(2);
     }
 
     private void initPath() {
-        coorPath = new Path();
+        XcoorPath = new Path();
+        YcoorPath = new Path();
         pointPath = new Path();
         curvePath = new Path();
+        mPathMeasure = new PathMeasure();
+
 
     }
 
     private void initListener() {
-
-        final ValueAnimator XpointStart = ObjectAnimator.ofInt(0, textX.size());
-        XpointStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                Xindex = (int) animation.getAnimatedValue();
-                invalidate();
-            }
-        });
-
-
-        final ValueAnimator YpointStart = ObjectAnimator.ofInt(0, textY.size());
-        YpointStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                Yindex = (int) animation.getAnimatedValue();
-                invalidate();
-            }
-        });
-
-        final ValueAnimator dataStart = ObjectAnimator.ofInt(0, textX.size() - 1);
-        dataStart.setDuration(SECONDS );
-        dataStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                dataIndex = (int) animation.getAnimatedValue();
-                invalidate();
-            }
-        });
-
-        ValueAnimator coorStart = ObjectAnimator.ofFloat(0, 1);
+        curveAnimation();
+        xyCoorAnimation();
+        coorStart = ObjectAnimator.ofFloat(0, 1);
         coorStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -222,9 +157,60 @@ public class TempCurveView extends View {
                 dataStart.start();
             }
         });
-        coorStart.setDuration(SECONDS).start();
-        XpointStart.setDuration(SECONDS).start();
-        YpointStart.setDuration(SECONDS).start();
+        coorStart.setDuration(SECONDS);
+    }
+
+    private void curveAnimation() {
+        dataStart = ObjectAnimator.ofFloat(0, 1);
+        dataStart.setDuration(SECONDS);
+        dataStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                curveValue = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+
+    }
+
+    private void xyCoorAnimation() {
+        if (textX != null && textY != null) {
+            xpointStart = ObjectAnimator.ofInt(0, textX.size());
+            xpointStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Xindex = (int) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+
+            ypointStart = ObjectAnimator.ofInt(0, textY.size());
+            ypointStart.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Yindex = (int) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            xpointStart.setDuration(SECONDS);
+            ypointStart.setDuration(SECONDS);
+        }
+    }
+
+    public void start() {
+        if (showCoor) {
+            if (coorStart != null) {
+                coorStart.start();
+            }
+            if (xpointStart != null && ypointStart != null) {
+                xpointStart.start();
+                ypointStart.start();
+            }
+        } else {
+            if (dataStart != null) {
+                dataStart.start();
+            }
+        }
     }
 
     @Override
@@ -234,13 +220,16 @@ public class TempCurveView extends View {
         mHeight = h;
         coorWidth = mWidth - 3 * margin;
         coorHeight = mHeight - 3 * margin;
+        XcoorPath.moveTo(0, 0);
+        XcoorPath.lineTo(mWidth - 2 * margin, 0);
+        YcoorPath.moveTo(0, 0);
+        YcoorPath.lineTo(0, mHeight - 2 * margin);
         initPoints();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         canvas.drawColor(Color.parseColor(canvasColor));
         canvas.translate(margin, mHeight - margin);
         canvas.scale(1, -1);
@@ -248,6 +237,7 @@ public class TempCurveView extends View {
             drawCoor(canvas);
             drawPoints(canvas);
         }
+        drawCurve(canvas);
     }
 
     /**
@@ -256,13 +246,14 @@ public class TempCurveView extends View {
      * @param canvas
      */
     private void drawCoor(Canvas canvas) {
-        coorPath.reset();
-        coorPath.moveTo(0, 0);
-        coorPath.lineTo(coorValue * (mWidth - 2 * margin), 0);
-        coorPath.moveTo(0, 0);
-        coorPath.lineTo(0, coorValue * (mHeight - 2 * margin));
-        canvas.drawPath(coorPath, linePaint);
-        drawCurve(canvas);
+        mPathMeasure.setPath(XcoorPath, false);
+        Path dst = new Path();
+        mPathMeasure.getSegment(0, coorValue * mPathMeasure.getLength(), dst, true);
+        canvas.drawPath(dst, linePaint);
+        mPathMeasure.setPath(YcoorPath, false);
+        Path dst1 = new Path();
+        mPathMeasure.getSegment(0, coorValue * mPathMeasure.getLength(), dst1, true);
+        canvas.drawPath(dst1, linePaint);
     }
 
     /**
@@ -307,73 +298,135 @@ public class TempCurveView extends View {
         }
     }
 
-
+    /**
+     * 初始化曲线各个点
+     */
     private void initPoints() {
-        //初始化连接点
-        for (int i = 0; i < dataX.size(); i++) {
-            PointF point = new PointF(dataX.get(i) / textX.get(textX.size() - 1) * coorWidth,
-                    dataY.get(i) / textY.get(textY.size() - 1) * coorHeight);
-            mPoints.add(point);
-        }
-        //初始化中点
-        for (int i = 0; i < mPoints.size(); i++) {
-            if (i == mPoints.size() - 1) {
-                continue;
-            } else {
-                PointF pointF = new PointF((mPoints.get(i).x + mPoints.get(i + 1).x) / 2, (mPoints.get(i).y + mPoints.get(i + 1).y) / 2);
-                mMidPoints.add(pointF);
-            }
-        }
-        //初始化中点的中点
-        for (int i = 0; i < mMidPoints.size(); i++) {
 
-            if (i == mMidPoints.size() - 1) {
-                continue;
-            } else {
-                PointF pointF = new PointF((mMidPoints.get(i).x + mMidPoints.get(i + 1).x) / 2, (mMidPoints.get(i).y + mMidPoints.get(i + 1).y) / 2);
-                mMidMidPoints.add(pointF);
+        if (dataX != null && dataY != null) {
+            //初始化连接点
+            for (int i = 0; i < dataX.size(); i++) {
+                PointF point = new PointF(dataX.get(i) * coorWidth / textX.get(textX.size() - 1),
+                        dataY.get(i) * coorHeight / textY.get(textY.size() - 1));
+                mPoints.add(point);
             }
-        }
-        //初始化控制点
-        for (int i = 0; i < mPoints.size(); i++) {
-            if (i == 0 || i == mPoints.size() - 1) {
-                continue;
-            } else {
-                PointF before = new PointF();
-                PointF after = new PointF();
-                before.x = mPoints.get(i).x - mMidMidPoints.get(i - 1).x + mMidPoints.get(i - 1).x;
-                before.y = mPoints.get(i).y - mMidMidPoints.get(i - 1).y + mMidPoints.get(i - 1).y;
-                after.x = mPoints.get(i).x - mMidMidPoints.get(i - 1).x + mMidPoints.get(i).x;
-                after.y = mPoints.get(i).y - mMidMidPoints.get(i - 1).y + mMidPoints.get(i).y;
-                mControlPoints.add(before);
-                mControlPoints.add(after);
+            //初始化中点
+            for (int i = 0; i < mPoints.size(); i++) {
+                if (i == mPoints.size() - 1) {
+                    continue;
+                } else {
+                    PointF pointF = new PointF((mPoints.get(i).x + mPoints.get(i + 1).x) / 2, (mPoints.get(i).y + mPoints.get(i + 1).y) / 2);
+                    mMidPoints.add(pointF);
+                }
+            }
+            //初始化中点的中点
+            for (int i = 0; i < mMidPoints.size(); i++) {
+
+                if (i == mMidPoints.size() - 1) {
+                    continue;
+                } else {
+                    PointF pointF = new PointF((mMidPoints.get(i).x + mMidPoints.get(i + 1).x) / 2, (mMidPoints.get(i).y + mMidPoints.get(i + 1).y) / 2);
+                    mMidMidPoints.add(pointF);
+                }
+            }
+            //初始化控制点
+            for (int i = 0; i < mPoints.size(); i++) {
+                if (i == 0 || i == mPoints.size() - 1) {
+                    continue;
+                } else {
+                    PointF before = new PointF();
+                    PointF after = new PointF();
+                    before.x = mPoints.get(i).x - mMidMidPoints.get(i - 1).x + mMidPoints.get(i - 1).x;
+                    before.y = mPoints.get(i).y - mMidMidPoints.get(i - 1).y + mMidPoints.get(i - 1).y;
+                    after.x = mPoints.get(i).x - mMidMidPoints.get(i - 1).x + mMidPoints.get(i).x;
+                    after.y = mPoints.get(i).y - mMidMidPoints.get(i - 1).y + mMidPoints.get(i).y;
+                    mControlPoints.add(before);
+                    mControlPoints.add(after);
+                }
+            }
+            for (int i = 0; i < mPoints.size(); i++) {
+                if (i == 0) {
+                    curvePath.moveTo(mPoints.get(i).x, mPoints.get(i).y);
+                    curvePath.quadTo(mControlPoints.get(i).x, mControlPoints.get(i).y,
+                            mPoints.get(i + 1).x, mPoints.get(i + 1).y);
+                } else if (i < mPoints.size() - 2) {
+                    curvePath.cubicTo(mControlPoints.get(2 * i - 1).x, mControlPoints.get(2 * i - 1).y,
+                            mControlPoints.get(2 * i).x, mControlPoints.get(2 * i).y,
+                            mPoints.get(i + 1).x, mPoints.get(i + 1).y);
+                } else if (i == mPoints.size() - 2) {
+                    curvePath.quadTo(mControlPoints.get(mControlPoints.size() - 1).x, mControlPoints.get(mControlPoints.size() - 1).y,
+                            mPoints.get(i + 1).x, mPoints.get(i + 1).y);
+                }
             }
         }
 
     }
 
+    /**
+     * 绘制曲线
+     *
+     * @param canvas
+     */
     private void drawCurve(Canvas canvas) {
-        curvePath.reset();
-        for (int i = 0; i < dataIndex; i++) {
-            if (i == 0) {
-                curvePath.moveTo(mPoints.get(i).x, mPoints.get(i).y);
-                curvePath.quadTo(mControlPoints.get(i).x, mControlPoints.get(i).y,
-                        mPoints.get(i + 1).x, mPoints.get(i + 1).y);
-            } else if (i < mPoints.size() - 2) {
-                curvePath.cubicTo(mControlPoints.get(2 * i - 1).x, mControlPoints.get(2 * i - 1).y,
-                        mControlPoints.get(2 * i).x, mControlPoints.get(2 * i).y,
-                        mPoints.get(i + 1).x, mPoints.get(i + 1).y);
-            } else if (i == mPoints.size() - 2) {
-                curvePath.moveTo(mPoints.get(i).x, mPoints.get(i).y);
-                curvePath.quadTo(mControlPoints.get(mControlPoints.size() - 1).x, mControlPoints.get(mControlPoints.size() - 1).y,
-                        mPoints.get(i + 1).x, mPoints.get(i + 1).y);
-            }
-        }
-        canvas.drawPath(curvePath, linePaint);
+        mPathMeasure.setPath(curvePath, false);
+        Path dst = new Path();
+        mPathMeasure.getSegment(0, curveValue * mPathMeasure.getLength(), dst, true);
+        canvas.drawPath(dst, curvePaint);
+
     }
 
 
     public void setShowCoor(boolean showCoor) {
         this.showCoor = showCoor;
+    }
+
+    public void setCoor(List<Integer> textX, List<Integer> textY) {
+        this.textX = textX;
+        this.textY = textY;
+        xyCoorAnimation();
+    }
+
+
+    public void setCanvasColor(String canvasColor) {
+        this.canvasColor = canvasColor;
+    }
+
+    public void setUnitX(String unitX, String unitY) {
+        this.unitX = unitX;
+        this.unitY = unitY;
+    }
+
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public void setMargin(float margin) {
+        this.margin = margin;
+    }
+
+    public void setData(List<Float> dataX, List<Float> dataY) {
+        mPoints.clear();
+        mMidPoints.clear();
+        mMidMidPoints.clear();
+        mControlPoints.clear();
+        this.dataX = dataX;
+        this.dataY = dataY;
+
+    }
+
+    public void startCurveAnimation() {
+        if (dataStart != null) {
+            dataStart.start();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
     }
 }
