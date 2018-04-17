@@ -3,12 +3,15 @@ package com.ljs.customview.view;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -53,8 +56,10 @@ public class WaveView extends View {
     private float dx2;
     private ValueAnimator waveAnimator;
     private ValueAnimator waveAnimator2;
-    private float maxHeight = 100;
-    private float progressHeight = 0;
+    private ValueAnimator waveAnimator3;
+    private float max = 100;
+    private float progress = 0;
+    private float progressHeight;
 
     public WaveView(Context context) {
         this(context, null);
@@ -76,7 +81,7 @@ public class WaveView extends View {
     }
 
     private void initAnimator() {
-        waveAnimator = ObjectAnimator.ofFloat(0, radius * 2);
+        waveAnimator = ObjectAnimator.ofFloat(0, size);
         waveAnimator.setDuration(1000);
         waveAnimator.setRepeatMode(ValueAnimator.INFINITE);
         waveAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -88,8 +93,8 @@ public class WaveView extends View {
                 invalidate();
             }
         });
-        waveAnimator.start();
-        waveAnimator2 = ObjectAnimator.ofFloat(-radius / 2,radius * 3 / 2);
+
+        waveAnimator2 = ObjectAnimator.ofFloat(-radius / 2, radius * 3 / 2);
         waveAnimator2.setDuration(1000);
         waveAnimator2.setRepeatMode(ValueAnimator.INFINITE);
         waveAnimator2.setRepeatCount(ValueAnimator.INFINITE);
@@ -101,6 +106,22 @@ public class WaveView extends View {
                 invalidate();
             }
         });
+
+
+        waveAnimator3 = ObjectAnimator.ofFloat(0, size);
+        waveAnimator3.setDuration(20000);
+        waveAnimator3.setRepeatMode(ValueAnimator.INFINITE);
+        waveAnimator3.setRepeatCount(ValueAnimator.INFINITE);
+        waveAnimator3.setInterpolator(new LinearInterpolator());
+        waveAnimator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                progressHeight = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        waveAnimator3.start();
+        waveAnimator.start();
         waveAnimator2.start();
     }
 
@@ -136,36 +157,37 @@ public class WaveView extends View {
         size = Math.min(mWidth, mHeight);
         radius = size / 2;
         setMeasuredDimension(size, size);
-        circlePath.addCircle(radius, 0, radius, Path.Direction.CW);
-        initPoints();
+        progressHeight = progress * progressHeight / max;
+        circlePath.addCircle(radius, radius, radius, Path.Direction.CW);
         initAnimator();
     }
 
     private void initPoints() {
         mPoints1.clear();
         mControlPoints1.clear();
-        mPoints1.add(new PointF(-radius * 2, 0));
-        mPoints1.add(new PointF(-radius, 0));
-        mPoints1.add(new PointF(0, 0));
-        mPoints1.add(new PointF(radius, 0));
-        mPoints1.add(new PointF(radius * 2, 0));
-        mControlPoints1.add(new PointF(-radius * 3 / 2, radius / 3));
-        mControlPoints1.add(new PointF(-radius / 2, -radius / 3));
-        mControlPoints1.add(new PointF(radius / 2, radius / 3));
-        mControlPoints1.add(new PointF(radius * 3 / 2, -radius / 3));
+
+        mPoints1.add(new PointF(-radius * 2, progressHeight));
+        mPoints1.add(new PointF(-radius, progressHeight));
+        mPoints1.add(new PointF(0, progressHeight));
+        mPoints1.add(new PointF(radius, progressHeight));
+        mPoints1.add(new PointF(radius * 2, progressHeight));
+        mControlPoints1.add(new PointF(-radius * 3 / 2, radius / 5 + progressHeight));
+        mControlPoints1.add(new PointF(-radius / 2, -radius / 5 + progressHeight));
+        mControlPoints1.add(new PointF(radius / 2, radius / 5 + progressHeight));
+        mControlPoints1.add(new PointF(radius * 3 / 2, -radius / 5 + progressHeight));
 
         mPoints2.clear();
         mControlPoints2.clear();
 
-        mPoints2.add(new PointF(-radius / 2, 0));
-        mPoints2.add(new PointF(radius / 2, 0));
-        mPoints2.add(new PointF(radius * 3 / 2, 0));
-        mPoints2.add(new PointF(radius * 5 / 2, 0));
-        mPoints2.add(new PointF(radius * 7 / 2, 0));
-        mControlPoints2.add(new PointF(0, -radius / 5));
-        mControlPoints2.add(new PointF(radius, radius / 5));
-        mControlPoints2.add(new PointF(radius * 2, -radius / 5));
-        mControlPoints2.add(new PointF(radius * 3, radius / 5));
+        mPoints2.add(new PointF(-radius / 2, progressHeight));
+        mPoints2.add(new PointF(radius / 2, progressHeight));
+        mPoints2.add(new PointF(radius * 3 / 2, progressHeight));
+        mPoints2.add(new PointF(radius * 5 / 2, progressHeight));
+        mPoints2.add(new PointF(radius * 7 / 2, progressHeight));
+        mControlPoints2.add(new PointF(0, -radius / 8 + progressHeight));
+        mControlPoints2.add(new PointF(radius, radius / 8 + progressHeight));
+        mControlPoints2.add(new PointF(radius * 2, -radius / 8 + progressHeight));
+        mControlPoints2.add(new PointF(radius * 3, radius / 8 + progressHeight));
     }
 
     private void initWavePath() {
@@ -177,8 +199,8 @@ public class WaveView extends View {
                 wavePath1.quadTo(mControlPoints1.get(i - 1).x, mControlPoints1.get(i - 1).y, mPoints1.get(i).x, mPoints1.get(i).y);
             }
         }
-        wavePath1.lineTo(mPoints1.get(mPoints2.size() - 1).x, -radius);
-        wavePath1.lineTo(mPoints1.get(0).x, -radius);
+        wavePath1.lineTo(mPoints1.get(mPoints2.size() - 1).x, 0);
+        wavePath1.lineTo(mPoints1.get(0).x, 0);
         wavePath1.close();
         Matrix matrix = new Matrix();
         matrix.preTranslate(dx, 0);
@@ -193,8 +215,8 @@ public class WaveView extends View {
                 wavePath2.quadTo(mControlPoints2.get(i - 1).x, mControlPoints2.get(i - 1).y, mPoints2.get(i).x, mPoints2.get(i).y);
             }
         }
-        wavePath2.lineTo(mPoints2.get(mPoints2.size() - 1).x, -radius);
-        wavePath2.lineTo(mPoints2.get(0).x, -radius);
+        wavePath2.lineTo(mPoints2.get(mPoints2.size() - 1).x, 0);
+        wavePath2.lineTo(mPoints2.get(0).x, 0);
         wavePath2.close();
         Matrix matrix1 = new Matrix();
         matrix1.preTranslate(-dx2, 0);
@@ -206,10 +228,13 @@ public class WaveView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.scale(1, -1);
-        canvas.translate(0, -radius);
+        canvas.translate(0, -2 * radius);
         canvas.drawPath(circlePath, circlePaint);
-        initWavePath();
-        canvas.drawPath(wavePath1, wavePaint1);
-        canvas.drawPath(wavePath2, wavePaint2);
+        if (progressHeight != 0) {
+            initPoints();
+            initWavePath();
+            canvas.drawPath(wavePath1, wavePaint1);
+            canvas.drawPath(wavePath2, wavePaint2);
+        }
     }
 }
