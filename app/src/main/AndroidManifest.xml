@@ -34,7 +34,8 @@
         <activity android:name=".activity.DragCardActivity" />
         <activity android:name=".activity.FullImageActivity" />
         <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.CurveActivity"></activity>
+        <activity android:name=".activity.CurveActivity" />
+        <activity android:name=".activity.WaveActivity"></activity>
     </application>
 
 </manifest>
