@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -202,10 +203,10 @@ public class WaveView extends View {
         wavePath1.lineTo(mPoints1.get(mPoints2.size() - 1).x, 0);
         wavePath1.lineTo(mPoints1.get(0).x, 0);
         wavePath1.close();
+
         Matrix matrix = new Matrix();
         matrix.preTranslate(dx, 0);
         wavePath1.transform(matrix);
-        wavePath1.op(circlePath, Path.Op.INTERSECT);
 
         wavePath2.reset();
         for (int i = 0; i < mPoints2.size(); i++) {
@@ -221,7 +222,6 @@ public class WaveView extends View {
         Matrix matrix1 = new Matrix();
         matrix1.preTranslate(-dx2, 0);
         wavePath2.transform(matrix1);
-        wavePath2.op(circlePath, Path.Op.INTERSECT);
     }
 
     @Override
@@ -229,12 +229,15 @@ public class WaveView extends View {
         super.onDraw(canvas);
         canvas.scale(1, -1);
         canvas.translate(0, -2 * radius);
+        canvas.clipPath(circlePath);
         canvas.drawPath(circlePath, circlePaint);
         if (progressHeight != 0) {
             initPoints();
             initWavePath();
             canvas.drawPath(wavePath1, wavePaint1);
             canvas.drawPath(wavePath2, wavePaint2);
+            canvas.clipPath(wavePath1, Region.Op.INTERSECT);
+            canvas.clipPath(wavePath2, Region.Op.INTERSECT);
         }
     }
 }
