@@ -12,10 +12,11 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.listener.Listener;
 import com.ljs.customview.view.DragCardView;
 
-public class DragCardActivity extends AppCompatActivity {
+public class DragCardActivity extends BaseActivity {
 
     private DragCardView cardView;
     private ImageView img;

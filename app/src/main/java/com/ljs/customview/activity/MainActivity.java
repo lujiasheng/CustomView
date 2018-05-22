@@ -2,6 +2,7 @@ package com.ljs.customview.activity;
 
 import com.ljs.customview.R;
 import com.ljs.customview.R.layout;
+import com.ljs.customview.base.BaseActivity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,4 +68,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
     }
 
+    @Override
+    protected boolean enableSliding() {
+
+        return false;
+    }
 }

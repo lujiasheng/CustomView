@@ -8,8 +8,15 @@ android {
         applicationId "com.ljs.customview"
         minSdkVersion 11
         targetSdkVersion 23
-    }
 
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false

@@ -13,6 +13,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.model.FullImageInfo;
 
 /**
@@ -20,7 +21,7 @@ import com.ljs.customview.model.FullImageInfo;
  * <p>
  * 内容：
  */
-public class FullImageActivity extends AppCompatActivity {
+public class FullImageActivity extends BaseActivity {
 
     private ImageView fullImage;
     private float mScaleY;

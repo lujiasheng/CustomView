@@ -4,12 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.view.TempCurveView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurveActivity extends AppCompatActivity {
+public class CurveActivity extends BaseActivity {
     private List<Integer> textX;
     private List<Integer> textY;
     private List<Float> dataX;

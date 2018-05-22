@@ -96,7 +96,7 @@ public class WaveView extends View {
         });
 
         waveAnimator2 = ObjectAnimator.ofFloat(-radius / 2, radius * 3 / 2);
-        waveAnimator2.setDuration(1000);
+        waveAnimator2.setDuration(500);
         waveAnimator2.setRepeatMode(ValueAnimator.INFINITE);
         waveAnimator2.setRepeatCount(ValueAnimator.INFINITE);
         waveAnimator2.setInterpolator(new LinearInterpolator());
@@ -172,10 +172,10 @@ public class WaveView extends View {
         mPoints1.add(new PointF(0, progressHeight));
         mPoints1.add(new PointF(radius, progressHeight));
         mPoints1.add(new PointF(radius * 2, progressHeight));
-        mControlPoints1.add(new PointF(-radius * 3 / 2, radius / 5 + progressHeight));
-        mControlPoints1.add(new PointF(-radius / 2, -radius / 5 + progressHeight));
-        mControlPoints1.add(new PointF(radius / 2, radius / 5 + progressHeight));
-        mControlPoints1.add(new PointF(radius * 3 / 2, -radius / 5 + progressHeight));
+        mControlPoints1.add(new PointF(-radius * 3 / 2, radius / 7 + progressHeight));
+        mControlPoints1.add(new PointF(-radius / 2, -radius / 7 + progressHeight));
+        mControlPoints1.add(new PointF(radius / 2, radius / 7 + progressHeight));
+        mControlPoints1.add(new PointF(radius * 3 / 2, -radius / 7 + progressHeight));
 
         mPoints2.clear();
         mControlPoints2.clear();
@@ -185,10 +185,10 @@ public class WaveView extends View {
         mPoints2.add(new PointF(radius * 3 / 2, progressHeight));
         mPoints2.add(new PointF(radius * 5 / 2, progressHeight));
         mPoints2.add(new PointF(radius * 7 / 2, progressHeight));
-        mControlPoints2.add(new PointF(0, -radius / 8 + progressHeight));
-        mControlPoints2.add(new PointF(radius, radius / 8 + progressHeight));
-        mControlPoints2.add(new PointF(radius * 2, -radius / 8 + progressHeight));
-        mControlPoints2.add(new PointF(radius * 3, radius / 8 + progressHeight));
+        mControlPoints2.add(new PointF(0, -radius / 10 + progressHeight));
+        mControlPoints2.add(new PointF(radius, radius / 10 + progressHeight));
+        mControlPoints2.add(new PointF(radius * 2, -radius / 10 + progressHeight));
+        mControlPoints2.add(new PointF(radius * 3, radius / 10 + progressHeight));
     }
 
     private void initWavePath() {

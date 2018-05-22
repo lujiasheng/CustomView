@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.view.SearchView;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseActivity {
 
     private SearchView searchView;
 

@@ -4,9 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.view.WaveView;
 
-public class WaveActivity extends AppCompatActivity {
+public class WaveActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,25 +1,16 @@
 package com.ljs.customview.activity;
 
-import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ViewTreeObserver;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.model.FullImageInfo;
 import com.ljs.customview.view.BorderScaleImageView;
 
-import java.io.Serializable;
-
-public class SlideScaleActivity extends AppCompatActivity {
+public class SlideScaleActivity extends BaseActivity {
 
     private BorderScaleImageView view;
     private FullImageInfo fullImageInfo;
@@ -49,7 +40,7 @@ public class SlideScaleActivity extends AppCompatActivity {
                 Intent intent = new Intent(SlideScaleActivity.this, FullImageActivity.class);
                 intent.putExtra("data",fullImageInfo);
                 startActivity(intent);
-                overridePendingTransition(R.anim.enter, R.anim.out);
+                overridePendingTransition(R.anim.anim_slide_in, R.anim.anim_slide_out);
             }
         });
     }
