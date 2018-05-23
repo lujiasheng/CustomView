@@ -35,7 +35,8 @@
         <activity android:name=".activity.FullImageActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.CurveActivity" />
-        <activity android:name=".activity.WaveActivity"></activity>
+        <activity android:name=".activity.WaveActivity" />
+        <activity android:name=".activity.DragItemActivity"></activity>
     </application>
 
 </manifest>

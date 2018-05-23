@@ -32,8 +32,12 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
         Button button6 = (Button) findViewById(R.id.button6);
         button6.setOnClickListener(this);
+
         Button button7 = (Button) findViewById(R.id.button7);
         button7.setOnClickListener(this);
+
+        Button button8 = (Button) findViewById(R.id.button8);
+        button8.setOnClickListener(this);
 
     }
 
@@ -61,6 +65,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.button7:
                 startActivity(new Intent(this, WaveActivity.class));
+                break;
+            case R.id.button8:
+                startActivity(new Intent(this, DragItemActivity.class));
                 break;
             default:
                 break;
