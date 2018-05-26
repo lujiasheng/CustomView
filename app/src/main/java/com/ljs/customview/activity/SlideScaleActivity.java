@@ -40,7 +40,6 @@ public class SlideScaleActivity extends BaseActivity {
                 Intent intent = new Intent(SlideScaleActivity.this, FullImageActivity.class);
                 intent.putExtra("data",fullImageInfo);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in, R.anim.anim_slide_out);
             }
         });
     }

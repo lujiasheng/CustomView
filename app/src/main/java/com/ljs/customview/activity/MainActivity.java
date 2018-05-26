@@ -67,7 +67,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
                 startActivity(new Intent(this, WaveActivity.class));
                 break;
             case R.id.button8:
-                startActivity(new Intent(this, DragItemActivity.class));
+                Class clazz = null;
+                try {
+                    clazz = Class.forName("com.ljs.customview.activity.DragItemActivity");
+                } catch (ClassNotFoundException e) {
+                }
+
+                startActivity(new Intent(this, clazz));
                 break;
             default:
                 break;

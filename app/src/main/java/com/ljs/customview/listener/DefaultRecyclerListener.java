@@ -1,5 +1,7 @@
 package com.ljs.customview.listener;
 
+import android.view.View;
+
 /**
  * 作者：Administrator create on 2018/5/22
  * <p/>
@@ -38,6 +40,36 @@ public abstract class DefaultRecyclerListener implements RecyclerListener {
 
     @Override
     public void dragItem(int fromPosition, int toPosition) {
+
+    }
+
+    @Override
+    public void addItem(View view, int position) {
+
+    }
+
+    @Override
+    public void deleteItem(View view, int position) {
+
+    }
+
+    @Override
+    public void loadMore(View view) {
+
+    }
+
+    @Override
+    public void onRefresh(View view) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
 
     }
 }
