@@ -11,10 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.utils.StatusBarUtils;
 
 
-public class StatusBarWhiteCoordinatorActivity extends AppCompatActivity {
+public class StatusBarWhiteCoordinatorActivity extends BaseActivity {
 
 
     @Override

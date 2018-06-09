@@ -7,10 +7,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.utils.StatusBarUtils;
 
 
-public class StatusBarColorActivity extends AppCompatActivity {
+public class StatusBarColorActivity extends BaseActivity {
 
 
     @Override

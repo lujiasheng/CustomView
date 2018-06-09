@@ -1,20 +1,9 @@
 package com.ljs.customview.base;
 
-import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.ljs.customview.R;
 import com.ljs.customview.view.SlideLayout;
 
 /**
@@ -22,9 +11,8 @@ import com.ljs.customview.view.SlideLayout;
  * <p/>
  * 内容：
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public  class BaseActivity extends AppCompatActivity {
 
-    private LinearLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +21,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             SlideLayout rootView = new SlideLayout(this);
             rootView.bindActivity(this);
         }
-
     }
 
 

@@ -6,10 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.utils.StatusBarUtils;
 
 
-public class StatusBarTranslucent extends AppCompatActivity {
+public class StatusBarTranslucent extends BaseActivity {
 
     boolean isHide;
 

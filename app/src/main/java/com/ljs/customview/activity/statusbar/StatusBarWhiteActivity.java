@@ -7,10 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ljs.customview.R;
+import com.ljs.customview.base.BaseActivity;
 import com.ljs.customview.utils.StatusBarUtils;
 
 
-public class StatusBarWhiteActivity extends AppCompatActivity {
+public class StatusBarWhiteActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
