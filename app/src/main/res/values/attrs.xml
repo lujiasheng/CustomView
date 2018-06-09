@@ -5,4 +5,16 @@
         <attr name="circle_radius" format="dimension"/>
         <attr name="magnifier_width" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="BlockLoadingView">
+        <attr name="half_BlockWidth" format="dimension" />
+        <attr name="blockInterval" format="dimension" />
+        <attr name="initPosition" format="integer" />
+        <attr name="isClock_Wise" format="boolean" />
+        <attr name="lineNumber" format="integer"  />
+        <attr name="moveSpeed" format="integer"  />
+        <attr name="blockColor" format="color"  />
+        <attr name="moveBlock_Angle" format="float"  />
+        <attr name="fixBlock_Angle" format="float"  />
+        <attr name="move_Interpolator" format="reference"  />
+    </declare-styleable>
 </resources>

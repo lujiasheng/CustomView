@@ -1,4 +1,4 @@
-package com.ljs.customview.activity;
+package com.ljs.customview.activity.statusbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,16 +6,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ljs.customview.R;
-import com.ljs.customview.activity.statusbar.StatusBarActivity;
 import com.ljs.customview.base.BaseActivity;
-import com.ljs.customview.utils.StatusBarUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity {
+public class StatusBarActivity extends BaseActivity {
 
     @BindView(R.id.button1)
     Button button1;
@@ -44,7 +42,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        button1.setText("StatusBarColorActivity");
+        button2.setText("StatusBarColorCoordinatorActivity");
+        button3.setText("StatusBarColorToolBarActivity");
+        button4.setText("StatusBarTranslucent");
+        button5.setText("StatusBarTranslucentCoordinatorActivity");
+        button6.setText("StatusBarWhiteActivity");
+        button7.setText("StatusBarWhiteCoordinatorActivity");
+        button8.setText("StatusBarWhiteToolBarActivity");
 
     }
 
@@ -55,45 +60,37 @@ public class MainActivity extends BaseActivity {
         return false;
     }
 
-    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,R.id.button10})
+    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.button10})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button1:
-                startActivity(new Intent(this, RouteActivity.class));
+                startActivity(new Intent(this, StatusBarColorActivity.class));
                 break;
             case R.id.button2:
-                startActivity(new Intent(this, PhotoZoomActivity.class));
+                startActivity(new Intent(this, StatusBarColorCoordinatorActivity.class));
                 break;
             case R.id.button3:
-                startActivity(new Intent(this, SlideScaleActivity.class));
+                startActivity(new Intent(this, StatusBarColorToolBarActivity.class));
                 break;
             case R.id.button4:
-                startActivity(new Intent(this, DragCardActivity.class));
+                startActivity(new Intent(this, StatusBarTranslucent.class));
                 break;
             case R.id.button5:
-                startActivity(new Intent(this, SearchActivity.class));
+                startActivity(new Intent(this, StatusBarTranslucentCoordinatorActivity.class));
                 break;
-
             case R.id.button6:
-                startActivity(new Intent(this, CurveActivity.class));
+                startActivity(new Intent(this, StatusBarWhiteActivity.class));
                 break;
             case R.id.button7:
-                startActivity(new Intent(this, WaveActivity.class));
+                startActivity(new Intent(this, StatusBarWhiteCoordinatorActivity.class));
                 break;
             case R.id.button8:
-                Class clazz = null;
-                try {
-                    clazz = Class.forName("com.ljs.customview.activity.DragItemActivity");
-                } catch (ClassNotFoundException e) {
-                }
 
-                startActivity(new Intent(this, clazz));
+                startActivity(new Intent(this, StatusBarWhiteToolBarActivity.class));
                 break;
             case R.id.button9:
-                startActivity(new Intent(this, BlockLoadActivity.class));
                 break;
             case R.id.button10:
-                startActivity(new Intent(this, StatusBarActivity.class));
                 break;
 
         }

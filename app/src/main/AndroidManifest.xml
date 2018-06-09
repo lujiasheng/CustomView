@@ -4,9 +4,9 @@
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="23" />
+    <!--<uses-sdk-->
+        <!--android:minSdkVersion="14"-->
+        <!--android:targetSdkVersion="23" />-->
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -36,7 +36,18 @@
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.CurveActivity" />
         <activity android:name=".activity.WaveActivity" />
-        <activity android:name=".activity.DragItemActivity"></activity>
+        <activity android:name=".activity.DragItemActivity" />
+        <activity android:name=".activity.BlockLoadActivity" />
+        <activity android:name=".activity.CollActivity" />
+        <activity android:name=".activity.statusbar.StatusBarActivity" />
+        <activity android:name=".activity.statusbar.StatusBarColorActivity" />
+        <activity android:name=".activity.statusbar.StatusBarColorCoordinatorActivity" />
+        <activity android:name=".activity.statusbar.StatusBarColorToolBarActivity" />
+        <activity android:name=".activity.statusbar.StatusBarTranslucent" />
+        <activity android:name=".activity.statusbar.StatusBarTranslucentCoordinatorActivity" />
+        <activity android:name=".activity.statusbar.StatusBarWhiteActivity" />
+        <activity android:name=".activity.statusbar.StatusBarWhiteCoordinatorActivity" />
+        <activity android:name=".activity.statusbar.StatusBarWhiteToolBarActivity" />
     </application>
 
 </manifest>
