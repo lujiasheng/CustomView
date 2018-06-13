@@ -16,3 +16,16 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 }
+ext {
+    var = [
+            // SDK And Tools
+            minSdkVersion        : 14,
+            targetSdkVersion     : 26,
+            compileSdkVersion    : 26,
+            renderscriptTargetApi: 28,
+            buildToolsVersion    : "26.0.3",
+            versionName          : "1.0.0",
+            versionCode          : 1,
+            supportLibraryVersion: "26.0.0-alpha1"
+    ]
+}
