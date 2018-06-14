@@ -26,6 +26,6 @@ ext {
             buildToolsVersion    : "26.0.3",
             versionName          : "1.0.0",
             versionCode          : 1,
-            supportLibraryVersion: "26.0.0-alpha1"
+            supportLibraryVersion: "26.+"
     ]
 }
