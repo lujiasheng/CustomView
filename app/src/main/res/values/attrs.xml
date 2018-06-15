@@ -17,4 +17,19 @@
         <attr name="fixBlock_Angle" format="float"  />
         <attr name="move_Interpolator" format="reference"  />
     </declare-styleable>
+    <declare-styleable name="LoadCommitView">
+        <attr name="text" format="string"/>
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="statusColor" format="color"/>
+        <attr name="progressColor" format="color"/>
+        <attr name="successColor" format="color"/>
+        <attr name="failColor" format="color"/>
+        <attr name="duration" format="integer"/>
+        <attr name="progressWidth" format="dimension" />
+        <attr name="successWidth" format="dimension"/>
+        <attr name="failWidth" format="dimension"/>
+        <attr name="show_finish_bg" format="boolean"/>
+
+    </declare-styleable>
 </resources>

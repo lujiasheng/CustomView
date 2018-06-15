@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEFEF"
+
+    tools:context="com.ljs.customview.activity.LoadCommitActivity">
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="开始提交" />
+
+    <Button
+        android:id="@+id/btn_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="成功" />
+
+    <Button
+        android:id="@+id/btn_fail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="失败" />
+
+    <com.ljs.customview.view.LoadCommitView
+        android:id="@+id/load_view"
+        android:layout_width="@dimen/x250"
+        android:layout_height="@dimen/x50"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/x20"
+        app:failWidth="@dimen/x3"
+        app:progressWidth="@dimen/x3"
+        app:successWidth="@dimen/x3"
+        app:show_finish_bg="true"
+        app:textSize="@dimen/x14" />
+
+</RelativeLayout>
