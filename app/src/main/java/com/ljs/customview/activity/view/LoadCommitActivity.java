@@ -1,4 +1,4 @@
-package com.ljs.customview.activity;
+package com.ljs.customview.activity.view;
 
 import android.os.Bundle;
 import android.view.View;

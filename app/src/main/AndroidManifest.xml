@@ -19,6 +19,13 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.Slide">
+
+        <!-- 渠道 -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name">
@@ -28,16 +35,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RouteActivity" />
-        <activity android:name=".activity.PhotoZoomActivity" />
-        <activity android:name=".activity.SlideScaleActivity" />
-        <activity android:name=".activity.DragCardActivity" />
-        <activity android:name=".activity.FullImageActivity" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.CurveActivity" />
-        <activity android:name=".activity.WaveActivity" />
-        <activity android:name=".activity.DragItemActivity" />
-        <activity android:name=".activity.BlockLoadActivity" />
+        <activity android:name=".activity.view.RouteActivity" />
+        <activity android:name=".activity.view.PhotoZoomActivity" />
+        <activity android:name=".activity.view.SlideScaleActivity" />
+        <activity android:name=".activity.view.DragCardActivity" />
+        <activity android:name=".activity.view.FullImageActivity" />
+        <activity android:name=".activity.view.SearchActivity" />
+        <activity android:name=".activity.view.CurveActivity" />
+        <activity android:name=".activity.view.WaveActivity" />
+        <activity android:name=".activity.view.DragItemActivity" />
+        <activity android:name=".activity.view.BlockLoadActivity" />
         <activity android:name=".activity.CollActivity" />
         <activity android:name=".activity.statusbar.StatusBarActivity" />
         <activity android:name=".activity.statusbar.StatusBarColorActivity" />
@@ -48,12 +55,10 @@
         <activity android:name=".activity.statusbar.StatusBarWhiteActivity" />
         <activity android:name=".activity.statusbar.StatusBarWhiteCoordinatorActivity" />
         <activity android:name=".activity.statusbar.StatusBarWhiteToolBarActivity" />
-        <!-- 渠道 -->
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" />
-
-        <activity android:name=".activity.LoadCommitActivity"></activity>
+        <activity android:name=".activity.view.LoadCommitActivity" />
+        <activity android:name=".activity.ListViewActivity" />
+        <activity android:name=".activity.RecyclerViewActivity" />
+        <activity android:name=".activity.view.FirstLoadActivity" />
     </application>
 
 </manifest>

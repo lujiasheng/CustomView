@@ -1,4 +1,4 @@
-package com.ljs.customview.activity;
+package com.ljs.customview.activity.view;
 
 import com.ljs.customview.R;
 import com.ljs.customview.base.BaseActivity;

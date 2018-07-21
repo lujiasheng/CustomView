@@ -70,12 +70,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="方块加载" />
+
         <Button
             android:id="@+id/button10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="StatusBar" />
+
         <Button
             android:id="@+id/button11"
             android:layout_width="match_parent"
@@ -83,5 +85,25 @@
             android:layout_marginTop="10dp"
             android:text="LoadCommit" />
 
+        <Button
+            android:id="@+id/button12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="ListViewActivity" />
+
+        <Button
+            android:id="@+id/button13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="RecyclerViewActivity" />
+
+        <Button
+            android:id="@+id/button14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="FirstLoadActivity" />
     </LinearLayout>
 </ScrollView>

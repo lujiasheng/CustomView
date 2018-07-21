@@ -1,9 +1,8 @@
-package com.ljs.customview.activity;
+package com.ljs.customview.activity.view;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.ljs.customview.R;
 import com.ljs.customview.base.BaseActivity;

@@ -7,8 +7,17 @@ import android.widget.Button;
 
 import com.ljs.customview.R;
 import com.ljs.customview.activity.statusbar.StatusBarActivity;
+import com.ljs.customview.activity.view.BlockLoadActivity;
+import com.ljs.customview.activity.view.CurveActivity;
+import com.ljs.customview.activity.view.DragCardActivity;
+import com.ljs.customview.activity.view.FirstLoadActivity;
+import com.ljs.customview.activity.view.LoadCommitActivity;
+import com.ljs.customview.activity.view.PhotoZoomActivity;
+import com.ljs.customview.activity.view.RouteActivity;
+import com.ljs.customview.activity.view.SearchActivity;
+import com.ljs.customview.activity.view.SlideScaleActivity;
+import com.ljs.customview.activity.view.WaveActivity;
 import com.ljs.customview.base.BaseActivity;
-import com.ljs.customview.utils.StatusBarUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +64,8 @@ public class MainActivity extends BaseActivity {
         return false;
     }
 
-    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,R.id.button10,R.id.button11})
+    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8,
+            R.id.button9,R.id.button10,R.id.button11,R.id.button12,R.id.button13,R.id.button14})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button1:
@@ -83,7 +93,7 @@ public class MainActivity extends BaseActivity {
             case R.id.button8:
                 Class clazz = null;
                 try {
-                    clazz = Class.forName("com.ljs.customview.activity.DragItemActivity");
+                    clazz = Class.forName("com.ljs.customview.activity.view.DragItemActivity");
                 } catch (ClassNotFoundException e) {
                 }
 
@@ -97,6 +107,15 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.button11:
                 startActivity(new Intent(this, LoadCommitActivity.class));
+                break;
+            case R.id.button12:
+                startActivity(new Intent(this, ListViewActivity.class));
+                break;
+            case R.id.button13:
+                startActivity(new Intent(this, RecyclerViewActivity.class));
+                break;
+            case R.id.button14:
+                startActivity(new Intent(this, FirstLoadActivity.class));
                 break;
 
         }

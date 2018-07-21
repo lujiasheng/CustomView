@@ -1,4 +1,4 @@
-package com.ljs.customview.activity;
+package com.ljs.customview.activity.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

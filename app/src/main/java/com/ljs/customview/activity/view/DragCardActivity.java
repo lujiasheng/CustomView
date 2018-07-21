@@ -1,4 +1,4 @@
-package com.ljs.customview.activity;
+package com.ljs.customview.activity.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
